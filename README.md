@@ -19,21 +19,34 @@ Open `index.html` in a browser.
 
 ![Research Card Studio desktop screenshot](screenshots/desktop.png)
 
-The app includes three built-in card modes:
+The app includes four built-in card modes:
 
 - Research
 - Trading
 - Onchain
+- Codex
 
 ## Features
 
 - live card preview
-- three visual themes
+- four visual themes
 - structured fields for conclusion, evidence, risks, and next step
 - one-click Markdown export
 - one-click PNG export
 - one-click sample loading
 - local-only workflow
+
+## Codex Repo Brief Mode
+
+Codex mode turns the same card format into a pre-change repository brief. Before asking Codex to edit a repo, capture:
+
+- repo purpose
+- setup commands
+- test commands
+- risky areas
+- next task
+
+The Markdown export switches to these repo-brief headings, so the output can be saved as a lightweight `PROJECT_BRIEF.md` or pasted into a Codex task.
 
 ## Why This Exists
 
@@ -67,7 +80,6 @@ LICENSE
 ## Roadmap
 
 - import / export JSON notes
-- add Codex repo brief mode
 - add browser extension clipper
 
 ## License

@@ -220,6 +220,20 @@ textarea:focus {
   background: rgba(46, 95, 168, 0.2);
 }
 
+.theme-codex {
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.97), rgba(246, 244, 255, 0.92)),
+    radial-gradient(circle at top right, rgba(107, 95, 214, 0.22), transparent 36%);
+}
+
+.theme-codex .card-glow {
+  background: rgba(107, 95, 214, 0.2);
+}
+
+.theme-codex .card-section li::before {
+  background: #6b5fd6;
+}
+
 .card-header,
 .research-card h2,
 .source-line,

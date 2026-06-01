@@ -52,5 +52,24 @@
       "Liquidity can disappear faster than the research cycle."
     ],
     "next": "Check holder distribution, LP state, deployer history, and recent buy/sell flow."
+  },
+  "codex": {
+    "mode": "Codex",
+    "title": "Repository onboarding brief",
+    "source": "GitHub repo before Codex changes",
+    "confidence": "Ready for triage",
+    "summary": "Prepare a compact brief before asking Codex to modify a repository, so setup, tests, risky areas, and the next task are explicit.",
+    "evidence": [
+      "Setup: open the README and package manifests, then identify install and run commands.",
+      "Setup: check AGENTS.md or project docs for local rules and forbidden actions.",
+      "Test: list the lightest command that verifies the target change.",
+      "Test: note any tests that require credentials, network access, or external services."
+    ],
+    "risks": [
+      "Hidden project conventions may live outside the README.",
+      "Generated setup commands can be stale if lockfiles changed.",
+      "Codex should not edit broad areas before the next task is scoped."
+    ],
+    "next": "Create PROJECT_BRIEF.md with repo purpose, setup commands, test commands, risky areas, and the first safe task."
   }
 }

@@ -3,9 +3,13 @@ const fields = {
   confidence: document.querySelector("#confidence"),
   title: document.querySelector("#title"),
   source: document.querySelector("#source"),
+  summaryLabel: document.querySelector("#summaryLabel"),
   summary: document.querySelector("#summary"),
+  evidenceLabel: document.querySelector("#evidenceLabel"),
   evidence: document.querySelector("#evidence"),
+  risksLabel: document.querySelector("#risksLabel"),
   risks: document.querySelector("#risks"),
+  nextLabel: document.querySelector("#nextLabel"),
   next: document.querySelector("#next")
 };
 
@@ -16,8 +20,11 @@ const preview = {
   title: document.querySelector("#cardTitle"),
   source: document.querySelector("#cardSource"),
   summary: document.querySelector("#cardSummary"),
+  evidenceHeading: document.querySelector("#cardEvidenceHeading"),
   evidence: document.querySelector("#cardEvidence"),
+  risksHeading: document.querySelector("#cardRisksHeading"),
   risks: document.querySelector("#cardRisks"),
+  nextHeading: document.querySelector("#cardNextHeading"),
   next: document.querySelector("#cardNext")
 };
 
@@ -81,6 +88,27 @@ const samples = {
     ],
     next:
       "Check holder distribution, LP state, deployer history, and recent buy/sell flow."
+  },
+  codex: {
+    mode: "Codex",
+    title: "Repository onboarding brief",
+    source: "GitHub repo before Codex changes",
+    confidence: "Ready for triage",
+    summary:
+      "Prepare a compact brief before asking Codex to modify a repository, so setup, tests, risky areas, and the next task are explicit.",
+    evidence: [
+      "Setup: open the README and package manifests, then identify install and run commands.",
+      "Setup: check AGENTS.md or project docs for local rules and forbidden actions.",
+      "Test: list the lightest command that verifies the target change.",
+      "Test: note any tests that require credentials, network access, or external services."
+    ],
+    risks: [
+      "Hidden project conventions may live outside the README.",
+      "Generated setup commands can be stale if lockfiles changed.",
+      "Codex should not edit broad areas before the next task is scoped."
+    ],
+    next:
+      "Create PROJECT_BRIEF.md with repo purpose, setup commands, test commands, risky areas, and the first safe task."
   }
 };
 
@@ -113,9 +141,28 @@ function cardData() {
   };
 }
 
+function sectionLabels(mode) {
+  if (mode === "Codex") {
+    return {
+      summary: "Repo Purpose",
+      evidence: "Setup / Test Commands",
+      risks: "Risky Areas",
+      next: "Next Task"
+    };
+  }
+
+  return {
+    summary: "Conclusion",
+    evidence: "Evidence",
+    risks: "Risks",
+    next: "Next Step"
+  };
+}
+
 function render() {
   const data = cardData();
   const theme = data.mode.toLowerCase();
+  const labels = sectionLabels(data.mode);
 
   preview.card.className = `research-card theme-${theme}`;
   preview.mode.textContent = data.mode;
@@ -124,6 +171,13 @@ function render() {
   preview.source.textContent = data.source;
   preview.summary.textContent = data.summary;
   preview.next.textContent = data.next;
+  fields.summaryLabel.textContent = labels.summary;
+  fields.evidenceLabel.textContent = labels.evidence;
+  fields.risksLabel.textContent = labels.risks;
+  fields.nextLabel.textContent = labels.next;
+  preview.evidenceHeading.textContent = labels.evidence;
+  preview.risksHeading.textContent = labels.risks;
+  preview.nextHeading.textContent = data.mode === "Codex" ? "Next Task" : "Next";
   setList(preview.evidence, data.evidence);
   setList(preview.risks, data.risks);
 }
@@ -145,6 +199,7 @@ function loadSample(name) {
 
 function markdown() {
   const data = cardData();
+  const labels = sectionLabels(data.mode);
   const evidence = data.evidence.map((item) => `- ${item}`).join("\n");
   const risks = data.risks.map((item) => `- ${item}`).join("\n");
 
@@ -154,19 +209,19 @@ Mode: ${data.mode}
 Source: ${data.source}
 Confidence: ${data.confidence}
 
-## Conclusion
+## ${labels.summary}
 
 ${data.summary}
 
-## Evidence
+## ${labels.evidence}
 
 ${evidence}
 
-## Risks
+## ${labels.risks}
 
 ${risks}
 
-## Next Step
+## ${labels.next}
 
 ${data.next}
 `;
@@ -252,6 +307,9 @@ function drawBulletList(context, items, x, y, maxWidth, accent) {
 }
 
 function themeColors(mode) {
+  if (mode === "Codex") {
+    return { accent: "#6b5fd6", background: "#f6f4ff" };
+  }
   if (mode === "Trading") {
     return { accent: "#d2673f", background: "#fff7f1" };
   }

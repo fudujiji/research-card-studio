@@ -18,6 +18,7 @@
             <button class="ghost-button" type="button" data-sample="research">Research</button>
             <button class="ghost-button" type="button" data-sample="trading">Trading</button>
             <button class="ghost-button" type="button" data-sample="onchain">Onchain</button>
+            <button class="ghost-button" type="button" data-sample="codex">Codex</button>
             <button class="ghost-button" type="button" id="exportPng">Export PNG</button>
             <button class="primary-button" type="button" id="copyMarkdown">Copy Markdown</button>
           </div>
@@ -32,6 +33,7 @@
                   <option>Research</option>
                   <option>Trading</option>
                   <option>Onchain</option>
+                  <option>Codex</option>
                 </select>
               </label>
               <label>
@@ -51,26 +53,26 @@
             </label>
 
             <label>
-              Conclusion
+              <span id="summaryLabel">Conclusion</span>
               <textarea id="summary" name="summary" rows="4">A compact PROJECT_BRIEF.md can reduce repeated repo orientation work before asking Codex to make changes.</textarea>
             </label>
 
             <label>
-              Evidence
+              <span id="evidenceLabel">Evidence</span>
               <textarea id="evidence" name="evidence" rows="6">Most repos scatter setup instructions across README, package files, tests, and local docs.
 A fixed brief helps Codex find commands, risks, and boundaries faster.
 The output can be reviewed by a human before any code edit.</textarea>
             </label>
 
             <label>
-              Risks
+              <span id="risksLabel">Risks</span>
               <textarea id="risks" name="risks" rows="5">Generated briefs can become stale.
 A scanner may miss project-specific conventions hidden in docs.
 Over-formatting can make the brief harder to maintain.</textarea>
             </label>
 
             <label>
-              Next Step
+              <span id="nextLabel">Next Step</span>
               <textarea id="next" name="next" rows="3">Build a minimal scanner that reads README, package manifests, test config, and AGENTS.md.</textarea>
             </label>
           </form>
@@ -86,15 +88,15 @@ Over-formatting can make the brief harder to maintain.</textarea>
               <p class="source-line" id="cardSource">Local repo triage</p>
               <p class="summary" id="cardSummary">A compact PROJECT_BRIEF.md can reduce repeated repo orientation work before asking Codex to make changes.</p>
               <div class="card-section">
-                <h3>Evidence</h3>
+                <h3 id="cardEvidenceHeading">Evidence</h3>
                 <ul id="cardEvidence"></ul>
               </div>
               <div class="card-section">
-                <h3>Risks</h3>
+                <h3 id="cardRisksHeading">Risks</h3>
                 <ul id="cardRisks"></ul>
               </div>
               <div class="next-step">
-                <span>Next</span>
+                <span id="cardNextHeading">Next</span>
                 <p id="cardNext">Build a minimal scanner that reads README, package manifests, test config, and AGENTS.md.</p>
               </div>
             </article>
