@@ -174,9 +174,174 @@ ${data.next}
 
 async function copyMarkdown() {
   await navigator.clipboard.writeText(markdown());
+  showToast("Copied");
+}
+
+function showToast(message) {
   const toast = document.querySelector("#toast");
+  toast.textContent = message;
   toast.classList.add("visible");
   window.setTimeout(() => toast.classList.remove("visible"), 1200);
+}
+
+function wrapLines(context, text, maxWidth) {
+  const words = text.split(/\s+/).filter(Boolean);
+  const lines = [];
+  let line = "";
+
+  words.forEach((word) => {
+    const next = line ? `${line} ${word}` : word;
+    if (context.measureText(next).width > maxWidth && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = next;
+    }
+  });
+
+  if (line) lines.push(line);
+  return lines;
+}
+
+function drawWrappedText(context, text, x, y, maxWidth, lineHeight) {
+  const lines = wrapLines(context, text, maxWidth);
+  lines.forEach((line, index) => {
+    context.fillText(line, x, y + index * lineHeight);
+  });
+  return y + lines.length * lineHeight;
+}
+
+function drawRoundRect(context, x, y, width, height, radius) {
+  context.beginPath();
+  context.roundRect(x, y, width, height, radius);
+  context.fill();
+}
+
+function drawPill(context, text, x, y, background, color) {
+  context.font = "700 22px Inter, Arial, sans-serif";
+  const width = context.measureText(text).width + 40;
+  context.fillStyle = background;
+  drawRoundRect(context, x, y, width, 46, 23);
+  context.fillStyle = color;
+  context.fillText(text, x + 20, y + 31);
+}
+
+function drawBulletList(context, items, x, y, maxWidth, accent) {
+  items.forEach((item) => {
+    context.font = "400 30px Inter, Arial, sans-serif";
+    const lines = wrapLines(context, item, maxWidth - 72);
+    const boxHeight = Math.max(74, lines.length * 38 + 34);
+
+    context.fillStyle = "rgba(255,255,255,0.68)";
+    drawRoundRect(context, x, y, maxWidth, boxHeight, 16);
+
+    context.fillStyle = accent;
+    context.beginPath();
+    context.arc(x + 32, y + 38, 7, 0, Math.PI * 2);
+    context.fill();
+
+    context.fillStyle = "#17211c";
+    lines.forEach((line, index) => {
+      context.fillText(line, x + 62, y + 42 + index * 38);
+    });
+
+    y += boxHeight + 18;
+  });
+
+  return y;
+}
+
+function themeColors(mode) {
+  if (mode === "Trading") {
+    return { accent: "#d2673f", background: "#fff7f1" };
+  }
+  if (mode === "Onchain") {
+    return { accent: "#2e5fa8", background: "#f2f7ff" };
+  }
+  return { accent: "#1f7a5a", background: "#f6faf7" };
+}
+
+function renderPngCanvas(data) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1400;
+  canvas.height = 1800;
+  const context = canvas.getContext("2d");
+  const colors = themeColors(data.mode);
+  const margin = 96;
+  const contentWidth = canvas.width - margin * 2;
+
+  context.fillStyle = colors.background;
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  context.strokeStyle = "rgba(23,33,28,0.06)";
+  context.lineWidth = 1;
+  for (let x = 0; x < canvas.width; x += 64) {
+    context.beginPath();
+    context.moveTo(x, 0);
+    context.lineTo(x, canvas.height);
+    context.stroke();
+  }
+  for (let y = 0; y < canvas.height; y += 64) {
+    context.beginPath();
+    context.moveTo(0, y);
+    context.lineTo(canvas.width, y);
+    context.stroke();
+  }
+
+  context.fillStyle = `${colors.accent}33`;
+  context.beginPath();
+  context.arc(canvas.width - 80, 70, 260, 0, Math.PI * 2);
+  context.fill();
+
+  drawPill(context, data.mode.toUpperCase(), margin, 92, "#17211c", "#ffffff");
+  drawPill(context, data.confidence.toUpperCase(), canvas.width - margin - 260, 92, "#ffffff", "#66736d");
+
+  let y = 238;
+  context.fillStyle = "#17211c";
+  context.font = "800 82px Inter, Arial, sans-serif";
+  y = drawWrappedText(context, data.title, margin, y, contentWidth, 90) + 24;
+
+  context.fillStyle = "#66736d";
+  context.font = "700 30px Inter, Arial, sans-serif";
+  context.fillText(data.source, margin, y);
+  y += 78;
+
+  context.fillStyle = "#17211c";
+  context.font = "400 39px Inter, Arial, sans-serif";
+  y = drawWrappedText(context, data.summary, margin, y, contentWidth, 52) + 72;
+
+  context.fillStyle = "#66736d";
+  context.font = "800 24px Inter, Arial, sans-serif";
+  context.fillText("EVIDENCE", margin, y);
+  y += 34;
+  y = drawBulletList(context, data.evidence, margin, y, contentWidth, colors.accent) + 52;
+
+  context.fillStyle = "#66736d";
+  context.font = "800 24px Inter, Arial, sans-serif";
+  context.fillText("RISKS", margin, y);
+  y += 34;
+  y = drawBulletList(context, data.risks, margin, y, contentWidth, colors.accent) + 52;
+
+  context.fillStyle = "#17211c";
+  drawRoundRect(context, margin, y, contentWidth, 190, 18);
+  context.fillStyle = "rgba(255,255,255,0.66)";
+  context.font = "800 22px Inter, Arial, sans-serif";
+  context.fillText("NEXT", margin + 30, y + 48);
+  context.fillStyle = "#ffffff";
+  context.font = "700 32px Inter, Arial, sans-serif";
+  drawWrappedText(context, data.next, margin + 30, y + 96, contentWidth - 60, 42);
+
+  return canvas;
+}
+
+async function exportPng() {
+  const data = cardData();
+  const canvas = renderPngCanvas(data);
+  const link = document.createElement("a");
+  link.download = `${data.mode.toLowerCase()}-research-card.png`;
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+  showToast("PNG exported");
 }
 
 Object.values(fields).forEach((field) => {
@@ -188,5 +353,6 @@ document.querySelectorAll("[data-sample]").forEach((button) => {
 });
 
 document.querySelector("#copyMarkdown").addEventListener("click", copyMarkdown);
+document.querySelector("#exportPng").addEventListener("click", exportPng);
 
 render();

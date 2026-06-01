@@ -31,6 +31,7 @@ The app includes three built-in card modes:
 - three visual themes
 - structured fields for conclusion, evidence, risks, and next step
 - one-click Markdown export
+- one-click PNG export
 - one-click sample loading
 - local-only workflow
 
@@ -65,7 +66,6 @@ LICENSE
 
 ## Roadmap
 
-- export card as PNG
 - import / export JSON notes
 - add Codex repo brief mode
 - add browser extension clipper
