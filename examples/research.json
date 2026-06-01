@@ -1,0 +1,56 @@
+{
+  "research": {
+    "mode": "Research",
+    "title": "Codex repo onboarding workflow",
+    "source": "Local repo triage",
+    "confidence": "Medium",
+    "summary": "A compact PROJECT_BRIEF.md can reduce repeated repo orientation work before asking Codex to make changes.",
+    "evidence": [
+      "Most repos scatter setup instructions across README, package files, tests, and local docs.",
+      "A fixed brief helps Codex find commands, risks, and boundaries faster.",
+      "The output can be reviewed by a human before any code edit."
+    ],
+    "risks": [
+      "Generated briefs can become stale.",
+      "A scanner may miss project-specific conventions hidden in docs.",
+      "Over-formatting can make the brief harder to maintain."
+    ],
+    "next": "Build a minimal scanner that reads README, package manifests, test config, and AGENTS.md."
+  },
+  "trading": {
+    "mode": "Trading",
+    "title": "BTC prediction market note",
+    "source": "Manual market review",
+    "confidence": "Low",
+    "summary": "The market is liquid enough to monitor, but the entry should wait for a clear catalyst and invalidation level.",
+    "evidence": [
+      "Recent volume is concentrated around a small number of price-threshold markets.",
+      "Resolution depends on a specific external price source.",
+      "Spread and liquidity are more important than headline probability."
+    ],
+    "risks": [
+      "Thin books can make the displayed price misleading.",
+      "Resolution wording may differ from the intuitive trade thesis.",
+      "Short-term volatility can erase a small perceived edge."
+    ],
+    "next": "Write the exact entry trigger, maximum size, and invalidation condition before taking risk."
+  },
+  "onchain": {
+    "mode": "Onchain",
+    "title": "Early token dossier",
+    "source": "Manual onchain checklist",
+    "confidence": "Watchlist only",
+    "summary": "The token has an interesting narrative, but it remains a watchlist candidate until holder concentration and liquidity depth are verified.",
+    "evidence": [
+      "Narrative is visible but still early.",
+      "Liquidity pool needs depth and lock verification.",
+      "Developer and top holder behavior must be reviewed before any action."
+    ],
+    "risks": [
+      "Contract or owner controls may be unsafe.",
+      "Early social activity can be artificial.",
+      "Liquidity can disappear faster than the research cycle."
+    ],
+    "next": "Check holder distribution, LP state, deployer history, and recent buy/sell flow."
+  }
+}

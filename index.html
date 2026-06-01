@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Research Card Studio</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace" aria-label="Research card editor">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Local-first research tool</p>
+            <h1>Research Card Studio</h1>
+          </div>
+          <div class="actions">
+            <button class="ghost-button" type="button" data-sample="research">Research</button>
+            <button class="ghost-button" type="button" data-sample="trading">Trading</button>
+            <button class="ghost-button" type="button" data-sample="onchain">Onchain</button>
+            <button class="primary-button" type="button" id="copyMarkdown">Copy Markdown</button>
+          </div>
+        </header>
+
+        <div class="panel-grid">
+          <form class="editor" id="cardForm">
+            <div class="field-row">
+              <label>
+                Mode
+                <select id="mode" name="mode">
+                  <option>Research</option>
+                  <option>Trading</option>
+                  <option>Onchain</option>
+                </select>
+              </label>
+              <label>
+                Confidence
+                <input id="confidence" name="confidence" type="text" value="Medium">
+              </label>
+            </div>
+
+            <label>
+              Title
+              <input id="title" name="title" type="text" value="Codex repo onboarding workflow">
+            </label>
+
+            <label>
+              Source
+              <input id="source" name="source" type="text" value="Local repo triage">
+            </label>
+
+            <label>
+              Conclusion
+              <textarea id="summary" name="summary" rows="4">A compact PROJECT_BRIEF.md can reduce repeated repo orientation work before asking Codex to make changes.</textarea>
+            </label>
+
+            <label>
+              Evidence
+              <textarea id="evidence" name="evidence" rows="6">Most repos scatter setup instructions across README, package files, tests, and local docs.
+A fixed brief helps Codex find commands, risks, and boundaries faster.
+The output can be reviewed by a human before any code edit.</textarea>
+            </label>
+
+            <label>
+              Risks
+              <textarea id="risks" name="risks" rows="5">Generated briefs can become stale.
+A scanner may miss project-specific conventions hidden in docs.
+Over-formatting can make the brief harder to maintain.</textarea>
+            </label>
+
+            <label>
+              Next Step
+              <textarea id="next" name="next" rows="3">Build a minimal scanner that reads README, package manifests, test config, and AGENTS.md.</textarea>
+            </label>
+          </form>
+
+          <section class="preview-wrap" aria-label="Research card preview">
+            <article class="research-card theme-research" id="cardPreview">
+              <div class="card-glow" aria-hidden="true"></div>
+              <div class="card-header">
+                <span class="mode-pill" id="cardMode">Research</span>
+                <span class="confidence-pill" id="cardConfidence">Medium</span>
+              </div>
+              <h2 id="cardTitle">Codex repo onboarding workflow</h2>
+              <p class="source-line" id="cardSource">Local repo triage</p>
+              <p class="summary" id="cardSummary">A compact PROJECT_BRIEF.md can reduce repeated repo orientation work before asking Codex to make changes.</p>
+              <div class="card-section">
+                <h3>Evidence</h3>
+                <ul id="cardEvidence"></ul>
+              </div>
+              <div class="card-section">
+                <h3>Risks</h3>
+                <ul id="cardRisks"></ul>
+              </div>
+              <div class="next-step">
+                <span>Next</span>
+                <p id="cardNext">Build a minimal scanner that reads README, package manifests, test config, and AGENTS.md.</p>
+              </div>
+            </article>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
+    <script src="app.js"></script>
+  </body>
+</html>
